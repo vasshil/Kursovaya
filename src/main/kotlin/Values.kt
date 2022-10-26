@@ -1,28 +1,49 @@
 import java.awt.Color
-
-// visual data
-const val screenWidth = 660
-const val screenHeight = 660
-
-const val numberOfSquares = 60
-
-const val squareSize = screenWidth / numberOfSquares
+import kotlin.math.PI
+import kotlin.math.min
 
 
 // stars data
-const val numberOfStars = 17 * 2000
+var numberOfStars = 200// * 2000
+
+
+val G = 6.67e-11 // гравитационная постоянная
+
+
+val minMass = 3285e20
+val maxMass = 59740e20
+val sunMass = 2e30
+
+val minRadius = 1
+val maxRadius = 5
+val sunRadius = 10
+
+val maxAngle = PI / 400
+
+val distanceBetweenAddingStars = 1
+
 
 val starsColors = listOf(
-    Color.getColor("#FFFEF2"),
-    Color.getColor("#D6F5FC"),
-    Color.getColor("#B7EDFD"),
-    Color.getColor("#55C1F4"),
-    Color.getColor("#2164F5"),
-    Color.getColor("#FDF47E"),
-    Color.getColor("#F3AE3D"),
-    Color.getColor("#F08A34"),
-    Color.getColor("#EC602A"),
-    Color.getColor("#E33126")
+    Color(0xFFFEF2),
+    Color(0xD6F5FC),
+    Color(0xB7EDFD),
+    Color(0x55C1F4),
+    Color(0x2164F5),
+    Color(0xFDF47E),
+    Color(0xF3AE3D),
+    Color(0xF08A34),
+    Color(0xEC602A),
+    Color(0xE33126)
+
 )
 
+
+
+// visual data
+val screenWidth = 780
+val screenHeight = 780
+
+val numberOfSquares = min(screenWidth, screenHeight) / sunRadius / 2
+
+val squareSize = screenWidth / numberOfSquares
 

@@ -8,5 +8,9 @@ class Vector(var x: Int, var y: Int) {
         y *= -1
     }
 
+    fun add(vector: Vector) {
+
+    }
+
 
 }

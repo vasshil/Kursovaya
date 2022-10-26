@@ -1,6 +1,5 @@
 package view
 
-import Star
 import screenHeight
 import screenWidth
 import java.awt.Dimension
@@ -10,11 +9,10 @@ import javax.swing.JFrame
 
 class GraphicsWindow: JFrame(), ComponentListener {
 
-    var canvas: Canvas
+    private var canvas: Canvas = Canvas()
 
     init {
 
-        canvas = Canvas()
         canvas.preferredSize = Dimension(screenWidth, screenHeight)
         contentPane.add(canvas)
 
@@ -27,6 +25,10 @@ class GraphicsWindow: JFrame(), ComponentListener {
 
         isVisible = true
 
+    }
+
+    fun update() {
+        canvas.repaint()
     }
 
 
