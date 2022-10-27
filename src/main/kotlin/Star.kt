@@ -90,6 +90,8 @@ class Star(
             neighbourStars.addAll(stars[square.first][square.second].toList())
         }
 
+        neighbourStars.add(sun)
+
         return neighbourStars
     }
 

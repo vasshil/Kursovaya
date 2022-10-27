@@ -47,8 +47,8 @@ fun main() {
                     star.move()
 
                     // checking if star changes square
-                    val newI = (star.y / squareSize).toInt()
-                    val newJ = (star.x / squareSize).toInt()
+                    val newI = ((star.y + screenHeight / 2 * kmInPx) / systemRadius / squareSize).toInt()
+                    val newJ = ((star.x + screenWidth / 2 * kmInPx) / systemRadius / squareSize).toInt()
 
                     if (newI != i || newJ != j) {
                         starsToMove += Pair(Pair(i, j), Pair(newI, newJ)) to star
@@ -64,8 +64,11 @@ fun main() {
 
         // changing squares of stars
         for ((positions, star) in starsToMove) {
-            stars[positions.second.first][positions.second.second].add(star)
-            stars[positions.first.first][positions.first.second].remove(star)
+            if (star.name != "SUN") {
+                stars[positions.second.first][positions.second.second].add(star)
+                stars[positions.first.first][positions.first.second].remove(star)
+            }
+
 
 
         }
@@ -89,16 +92,18 @@ private fun generateStars() {
     )
 
 
+
     for (n in 0 until numberOfStars) {
-        val rx = (random.nextInt(screenWidth / 2 - 3 * squareSize) + 2 * squareSize).toDouble()
-        val ry = (random.nextInt(screenHeight / 2 - 3 * squareSize) + 2 * squareSize).toDouble()
+//        val rx = (random.nextInt(screenWidth / 2 - 3 * squareSize) + 2 * squareSize).toDouble()
+//        val ry = (random.nextInt(screenHeight / 2 - 3 * squareSize) + 2 * squareSize).toDouble()
+        val r = random.nextDouble() * systemRadius
         val angle = random.nextDouble() * (2 * PI)
 
-        val x = rx * cos(angle) + sun.x
-        val y = ry * sin(angle) + sun.y
+        val x = r * cos(angle)//rx * cos(angle) + sun.x
+        val y = r * sin(angle)//ry * sin(angle) + sun.y
 
-        val i = (y / squareSize).toInt()
-        val j = (x / squareSize).toInt()
+        val i = ((y + screenHeight / 2 * kmInPx) / systemRadius / squareSize).toInt()
+        val j = ((x + screenWidth / 2 * kmInPx) / squareSize / systemRadius).toInt()
 
         stars[i][j].add(
             Star(

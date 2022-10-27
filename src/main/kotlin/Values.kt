@@ -4,7 +4,7 @@ import kotlin.math.min
 
 
 // stars data
-var numberOfStars = 20// * 2000
+var numberOfStars = 3// * 2000
 
 
 val G = 6.67e-11 // гравитационная постоянная
@@ -46,4 +46,8 @@ val screenHeight = 780
 val numberOfSquares = min(screenWidth, screenHeight) / sunRadius / 2
 
 val squareSize = screenWidth / numberOfSquares
+
+val systemRadius = 1e12
+
+val kmInPx = screenWidth / 2 / systemRadius
 
