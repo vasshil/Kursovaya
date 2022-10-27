@@ -4,7 +4,7 @@ import kotlin.math.min
 
 
 // stars data
-var numberOfStars = 200// * 2000
+var numberOfStars = 20// * 2000
 
 
 val G = 6.67e-11 // гравитационная постоянная

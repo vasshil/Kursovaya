@@ -1,4 +1,4 @@
-class Vector(var x: Int, var y: Int) {
+class Vector(var x: Double, var y: Double) {
 
     fun reverseX() {
         x *= -1
@@ -10,6 +10,10 @@ class Vector(var x: Int, var y: Int) {
 
     fun add(vector: Vector) {
 
+    }
+
+    override fun toString(): String {
+        return "x=$x y=$y"
     }
 
 
