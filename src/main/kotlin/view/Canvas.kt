@@ -1,12 +1,14 @@
 package view
 
 import Star
+import getWindowCoordinate
 import kmInPx
 import numberOfSquares
 import screenHeight
 import screenWidth
 import stars
 import sun
+import systemRadius
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Graphics2D
@@ -44,8 +46,8 @@ class Canvas: JPanel() {
     private fun drawStar(star: Star) {
         graphics.color = star.color
         graphics.fillOval(
-            (star.x * kmInPx - star.radius + screenWidth / 2).toInt(),
-            (star.y * kmInPx - star.radius + screenHeight / 2).toInt(),
+            (getWindowCoordinate(star.x, screenWidth) - star.radius).toInt(),
+            (getWindowCoordinate(star.y, screenHeight) - star.radius).toInt(),
             star.radius * 2,
             star.radius * 2
         )

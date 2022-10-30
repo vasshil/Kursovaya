@@ -15,46 +15,75 @@ fun main() {
     val window = GraphicsWindow()
 
     while (true) {
+        // doing on every iteration
 
-        // list of stars, which needed to move
-        val starsToMove = mutableMapOf<Pair<Pair<Int, Int>, Pair<Int, Int>>, Star>()
-
-        // checking all stars
+        // null force
         for (i in 0 until numberOfSquares) {
             for (j in 0 until numberOfSquares) {
-//                if (stars[i][j].size > 0) println(stars[i][j])
+                for (star in stars[i][j].toList()) {
+                    star.forceX = 0.0
+                    star.forceY = 0.0
+
+                }
+            }
+        }
+
+        sun.forceX = 0.0
+        sun.forceY = 0.0
+
+//        sun.checkNeighbourStarsInfluence()
+//        sun.move()
+
+        // list of stars, which needed to move
+        val starsToMove = mutableListOf<Star>()
+
+        // checking all stars for adding and gravitation influence
+        for (i in 0 until numberOfSquares) {
+            for (j in 0 until numberOfSquares) {
                 add@ for (star in stars[i][j].toList()) {
-//                    val star = stars[i][j].toList()[starI]
 
-                    // checking if 2 stars can be added
-                    val neighbourSquares = star.getNeighbourSquares()
-                    for (square in neighbourSquares) {
-                        for (neighbourStar in stars[square.first][square.second].toList()) {
-                            if (neighbourStar != star) {
-                                if (star.getDistanceToStar(neighbourStar) <= distanceBetweenAddingStars) {
-                                    star.add(neighbourStar) // !!!!!
+                    star.checkNeighbourStarsInfluence()
 
-                                    stars[square.first][square.second].remove(neighbourStar)
+                    for (neighbourStar in star.getNeighbourStars()) {
 
-                                    println("added ${neighbourStar.name} to ${star.name}; removed ${neighbourStar.name}")
-                                    break@add
-                                }
+                        // checking if 2 stars can be added
+                        if (neighbourStar != star) {
+//                            println("has neighbours ${star.getDistanceToStar(neighbourStar)} ${distanceBetweenAddingStars}")
+                            if (star.getDistanceToStar(neighbourStar) <= distanceBetweenAddingStars) {
+                                println("add")
+                                star.add(neighbourStar) // !!!!!
+
+                                stars[neighbourStar.i][neighbourStar.j].remove(neighbourStar)
+
+                                println("added ${neighbourStar.name} to ${star.name}; removed ${neighbourStar.name}")
+                                break@add
                             }
                         }
                     }
 
+                }
+            }
+        }
+
+        // moving stars
+        for (i in 0 until numberOfSquares) {
+            for (j in 0 until numberOfSquares) {
+                for (star in stars[i][j].toList()) {
+
                     // move star
                     star.move()
 
+                    if (getWindowCoordinate(star.x, screenWidth) !in 0 until screenWidth ||
+                        getWindowCoordinate(star.y, screenHeight) !in 0 until screenHeight) {
+                        stars[i][j].remove(star)
+                        continue
+                    }
+
                     // checking if star changes square
-                    val newI = ((star.y + screenHeight / 2 * kmInPx) / systemRadius / squareSize).toInt()
-                    val newJ = ((star.x + screenWidth / 2 * kmInPx) / systemRadius / squareSize).toInt()
-
+                    val newI = getWindowCoordinate(star.y, screenHeight) / squareSize
+                    val newJ = getWindowCoordinate(star.x, screenWidth) / squareSize
                     if (newI != i || newJ != j) {
-                        starsToMove += Pair(Pair(i, j), Pair(newI, newJ)) to star
-
-                        star.i = newI
-                        star.j = newJ
+                        starsToMove += star
 
                     }
 
@@ -63,18 +92,22 @@ fun main() {
         }
 
         // changing squares of stars
-        for ((positions, star) in starsToMove) {
+        for (star in starsToMove) {
             if (star.name != "SUN") {
-                stars[positions.second.first][positions.second.second].add(star)
-                stars[positions.first.first][positions.first.second].remove(star)
+                val newI = getWindowCoordinate(star.y, screenHeight) / squareSize
+                val newJ = getWindowCoordinate(star.x, screenWidth) / squareSize
+
+                stars[newI][newJ].add(star)
+                stars[star.i][star.j].remove(star)
+
+                star.i = newI
+                star.j = newJ
+
             }
-
-
-
         }
 
         window.update()
-        Thread.sleep(5)
+        Thread.sleep(sleepTime)
     }
 
 }
@@ -83,27 +116,27 @@ private fun generateStars() {
 
     sun = Star(
         "SUN",
-        screenWidth / 2.0,
-        screenHeight / 2.0,
+        0.0,
+        0.0,
         sunMass,
         0.0,
-        -1,
-        -1
+        screenWidth / 2 / squareSize,
+        screenHeight / 2 / squareSize
     )
 
 
+//    stars[sun.i][sun.j].add(sun)
+
 
     for (n in 0 until numberOfStars) {
-//        val rx = (random.nextInt(screenWidth / 2 - 3 * squareSize) + 2 * squareSize).toDouble()
-//        val ry = (random.nextInt(screenHeight / 2 - 3 * squareSize) + 2 * squareSize).toDouble()
         val r = random.nextDouble() * systemRadius
         val angle = random.nextDouble() * (2 * PI)
 
-        val x = r * cos(angle)//rx * cos(angle) + sun.x
-        val y = r * sin(angle)//ry * sin(angle) + sun.y
+        val x = r * cos(angle) * 0.9 //rx * cos(angle) + sun.x
+        val y = r * sin(angle) * 0.9 //ry * sin(angle) + sun.y
 
-        val i = ((y + screenHeight / 2 * kmInPx) / systemRadius / squareSize).toInt()
-        val j = ((x + screenWidth / 2 * kmInPx) / squareSize / systemRadius).toInt()
+        val i = (getWindowCoordinate(y, screenHeight) / squareSize).toInt()
+        val j = (getWindowCoordinate(x, screenWidth) / squareSize).toInt()
 
         stars[i][j].add(
             Star(
@@ -117,11 +150,17 @@ private fun generateStars() {
             )
         )
 
+//        println("$x $y $i $j")
+
     }
 
 }
 
 private fun getRandomMass(): Double {
     return minMass + random.nextDouble() * (maxMass - minMass)
+}
+
+fun getWindowCoordinate(value: Double, maxCoordinate: Int): Int {
+    return ((value / systemRadius + 1) * (maxCoordinate / 2)).toInt()
 }
 

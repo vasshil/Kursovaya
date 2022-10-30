@@ -32,56 +32,46 @@ class Star(
 
 //        var distance: Double
 //        var dCoordinate = arrayOf(0.0, 0.0)
-
-        forceX = 0.0
-        forceY = 0.0
-
-        val neighbourStars = getNeighbourStars()
-
-        for (neighbourStar in neighbourStars) {
-            val distance = getDistanceToStar(neighbourStar)
-
-            val v = G * mass * neighbourStar.mass / distance
-
-            forceX -= v * (x - neighbourStar.x) / distance
-            neighbourStar.forceX += v * (x - neighbourStar.x) / distance
-
-            forceY -= v * (x - neighbourStar.x) / distance
-            neighbourStar.forceY += v * (x - neighbourStar.x) / distance
-
-            val dt = 1
-
-            speed.x += dt * forceX / mass
-            speed.y += dt * forceY / mass
-
-            x += dt * speed.x
-            y += dt * speed.y
+//
+//        forceX = 0.0
+//        forceY = 0.0
 
 
-        }
+        val dt = 10000
+
+        speed.x += dt * forceX / mass
+        speed.y += dt * forceY / mass
+
+        x += dt * speed.x
+        y += dt * speed.y
 
 
-
-
-
-//        for (i in 0 until neighbourStars.size) {
-//            for (j in i + 1 until neighbourStars.size) {
-////                distance = 0.0
-//            }
-//        }
-
-
-
-
-//        angle += da
-//        x = rx * cos(angle) + sun.x
-//        y = ry * sin(angle) + sun.y
-
+//        println("${speed.x * dt / kmInPx} ${speed.y * dt / kmInPx}")
 
 
     }
 
-    private fun getNeighbourStars(): MutableList<Star> {
+    fun checkNeighbourStarsInfluence() {
+
+        val neighbourStars = getNeighbourStars()
+
+
+        for (neighbourStar in neighbourStars) {
+            val distance = getDistanceToStar(neighbourStar)
+
+            val v = (2 * G * mass * neighbourStar.mass / distance / distance)
+
+            forceX -= v * (x - neighbourStar.x) / distance
+            neighbourStar.forceX += v * (x - neighbourStar.x) / distance
+
+            forceY -= v * (y - neighbourStar.y) / distance
+            neighbourStar.forceY += v * (x - neighbourStar.x) / distance
+
+        }
+
+    }
+
+    fun getNeighbourStars(): MutableList<Star> {
         val neighbourStars = mutableListOf<Star>()
 
         val neighbourSquares = getNeighbourSquares()
@@ -137,7 +127,7 @@ class Star(
     }
 
     fun getDistanceToStar(star: Star): Double {
-        return hypot(abs(x - star.x), abs(y - star.y)) - (radius + star.radius) / 2
+        return hypot((x - star.x), (y - star.y)) - (radius + star.radius) / 2
     }
 
     private fun updateStarRadius(){
@@ -156,12 +146,14 @@ class Star(
 
         if (name != "SUN") {
             val R = getDistanceToStar(sun) + sunRadius / 2 // R = h + r
-            val secondSpaceSpeed = sqrt(2 * G * sun.mass / R)
+            val secondSpaceSpeed = sqrt(G * sun.mass / R)
 
             speed = Vector(
                 secondSpaceSpeed * sin(angle),
                 -secondSpaceSpeed * cos(angle)
             )
+        } else {
+            speed = Vector(0.0, 0.0)
         }
 
 
