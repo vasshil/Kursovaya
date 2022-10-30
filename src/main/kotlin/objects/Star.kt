@@ -9,6 +9,7 @@ import minMass
 import minRadius
 import numberOfSquares
 import squareSize
+import starsChartData
 import starsColors
 import sunMass
 import sunRadius
@@ -39,14 +40,21 @@ class Star(
         updateStarColor()
         setSpeed()
 
+        starsChartData[radius - 1] ++
+
     }
 
-    private fun updateStarRadius(){
+    private fun updateStarRadius() {
+//        starsChartData[radius - 1]--
+
         if (mass <= maxMass) {
             radius = round(linearInterpolation(minMass, maxMass, minRadius.toDouble(), maxRadius.toDouble(), mass)).toInt()
         } else if (mass <= sunMass) {
             radius = round(linearInterpolation(maxMass, sunMass, maxRadius + 1.0, sunRadius.toDouble(), mass)).toInt()
         }
+
+//        starsChartData[radius - 1]++
+
     }
 
     private fun linearInterpolation(

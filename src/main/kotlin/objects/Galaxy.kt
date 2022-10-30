@@ -9,6 +9,7 @@ import numberOfStars
 import screenHeight
 import screenWidth
 import squareSize
+import starsChartData
 import starsCounter
 import sunMass
 import systemRadius
@@ -61,6 +62,7 @@ class Galaxy {
 
                                 if (stars[neighbourStar.i][neighbourStar.j].remove(neighbourStar)) {
                                     starsCounter--
+                                    starsChartData[neighbourStar.radius - 1]--
                                 }
 
 
@@ -99,10 +101,12 @@ class Galaxy {
                     // move star
                     star.move()
 
+                    // remove star if it is out of screen bounds
                     if (getWindowCoordinate(star.x, screenWidth) !in 0 until screenWidth ||
                         getWindowCoordinate(star.y, screenHeight) !in 0 until screenHeight) {
                         stars[i][j].remove(star)
                         starsCounter--
+                        starsChartData[star.radius - 1]--
 
                         continue
                     }

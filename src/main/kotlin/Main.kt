@@ -12,14 +12,18 @@ val galaxy = Galaxy()
 var systemTime = 0.0
 var starsCounter = numberOfStars
 
+var starsChartData = MutableList(starsColors.size) { 0 }
+
 fun main() {
 
     galaxy.generateStars()
+    println(starsChartData)
 
     val window = GraphicsWindow()
 
     val infoWindow = InfoWindow()
     infoWindow.updateSelectedStar(sun)
+
 
     while (true) {
         // doing on every iteration
@@ -31,6 +35,7 @@ fun main() {
 
         infoWindow.updateSelectedStarInfoLabel()
         infoWindow.updateStarsInfoLabel()
+//        infoWindow.updateStarsInfoChart()
 
 
         Thread.sleep(sleepTime)

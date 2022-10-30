@@ -22,7 +22,7 @@ class InfoWindow: JFrame("Информация") {
     private val selectedStarView: SelectedStarView
     private val selectedStarInfoLabel: JLabel
     private val countOfStarsLabel: JLabel
-    private val countOfStarsChart: JPanel
+    private val countOfStarsChart: ChartView
 
     init {
 
@@ -50,7 +50,13 @@ class InfoWindow: JFrame("Информация") {
             infoScreenWidth,
             40)
 
-        countOfStarsChart = JPanel()
+        countOfStarsChart = ChartView()
+        countOfStarsChart.setBounds(
+            infoScreenPadding,
+            countOfStarsLabel.y + countOfStarsLabel.height,
+            infoScreenWidth - 2 * infoScreenPadding,
+            countOfStarsChart.chartHeight)
+
 
 
 
@@ -59,6 +65,7 @@ class InfoWindow: JFrame("Информация") {
         updateSelectedStarView()
         updateSelectedStarInfoLabel()
         updateStarsInfoLabel()
+        updateStarsInfoChart()
 
 
         val contentPanel = JPanel()
@@ -67,7 +74,7 @@ class InfoWindow: JFrame("Информация") {
         contentPanel.add(selectedStarView)
         contentPanel.add(selectedStarInfoLabel)
         contentPanel.add(countOfStarsLabel)
-//        contentPanel.add(countOfStarsChart)
+        contentPanel.add(countOfStarsChart)
 
 
 
@@ -109,6 +116,10 @@ class InfoWindow: JFrame("Информация") {
                     "<b>Время:</b> $systemTime часов<br/>" +
                     "<b>Количество звезд:</b> $starsCounter <br/> " +
             "</html>"
+    }
+
+    fun updateStarsInfoChart() {
+        countOfStarsChart.repaint()
     }
 
 }
