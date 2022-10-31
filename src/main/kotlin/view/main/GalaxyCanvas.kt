@@ -1,4 +1,4 @@
-package view
+package view.main
 
 import numberOfSquares
 import objects.Star
@@ -12,7 +12,7 @@ import java.awt.Graphics
 import java.awt.Graphics2D
 import javax.swing.JPanel
 
-class Canvas: JPanel() {
+class GalaxyCanvas: JPanel() {
 
     private lateinit var graphics: Graphics2D
 

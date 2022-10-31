@@ -1,15 +1,14 @@
-package view
+package view.info
 
-import dt
 import infoScreenHeight
 import infoScreenPadding
 import infoScreenWidth
 import objects.Star
 import objects.sun
+import screenWidth
 import starsCounter
 import sunRadius
 import systemTime
-import java.awt.Dimension
 import javax.swing.JFrame
 import javax.swing.JLabel
 import javax.swing.JPanel
@@ -17,7 +16,7 @@ import javax.swing.SwingConstants
 
 class InfoWindow: JFrame("Информация") {
 
-    private var selectedStar = sun
+    var selectedStar = sun
 
     private val selectedStarView: SelectedStarView
     private val selectedStarInfoLabel: JLabel
@@ -61,11 +60,11 @@ class InfoWindow: JFrame("Информация") {
 
 
 
-
-        updateSelectedStarView()
-        updateSelectedStarInfoLabel()
-        updateStarsInfoLabel()
-        updateStarsInfoChart()
+//
+//        updateSelectedStarView()
+//        updateSelectedStarInfoLabel()
+//        updateStarsInfoLabel()
+//        updateStarsInfoChart()
 
 
         val contentPanel = JPanel()
@@ -84,7 +83,8 @@ class InfoWindow: JFrame("Информация") {
 
         setSize(infoScreenWidth, infoScreenHeight)
 
-        setLocationRelativeTo(null)
+//        setLocationRelativeTo(null)
+        setLocation(100 + screenWidth, 0)
         isVisible = true
 
     }
@@ -92,9 +92,15 @@ class InfoWindow: JFrame("Информация") {
 
     fun updateSelectedStar(star: Star) {
         selectedStar = star
+
+        updateSelectedStarView()
+        updateSelectedStarInfoLabel()
+        updateStarsInfoLabel()
+        updateStarsInfoChart()
+
     }
 
-    private fun updateSelectedStarView() {
+    fun updateSelectedStarView() {
         selectedStarView.setStar(selectedStar)
     }
 
@@ -104,8 +110,8 @@ class InfoWindow: JFrame("Информация") {
                     "<b>Выбранная звезда</b><br/>" +
                     "<b>-Имя:</b> ${selectedStar.name}<br/>" +
                     "<b>-Масса:</b> ${selectedStar.mass} кг<br/>" +
-                    "<b>-Координаты:</b> ${selectedStar.x} ${selectedStar.y}<br/>" +
-                    "<b>-Скорость:</b> ${selectedStar.speed}" +
+                    "<b>-Координаты:</b> ${selectedStar.x.format(0)} ${selectedStar.y.format(0)}<br/>" +
+                    "<b>-Скорость:</b> ${selectedStar.speed.x.format(0)} ${selectedStar.speed.y.format(0)}" +
                 "</html>"
 
     }
@@ -121,5 +127,7 @@ class InfoWindow: JFrame("Информация") {
     fun updateStarsInfoChart() {
         countOfStarsChart.repaint()
     }
+
+    fun Double.format(digits: Int) = "%.${digits}f".format(this)
 
 }

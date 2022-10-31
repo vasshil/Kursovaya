@@ -25,7 +25,7 @@ class Star(
     var i: Int,
     var j: Int) {
 
-    var radius: Int = 0
+    var radius: Int = -1
     lateinit var color: Color
 
     lateinit var speed: Vector
@@ -40,12 +40,14 @@ class Star(
         updateStarColor()
         setSpeed()
 
-        starsChartData[radius - 1] ++
+//        starsChartData[radius - 1] ++
 
     }
 
     private fun updateStarRadius() {
-//        starsChartData[radius - 1]--
+        if (radius != -1) {
+            starsChartData[radius - 1]--
+        }
 
         if (mass <= maxMass) {
             radius = round(linearInterpolation(minMass, maxMass, minRadius.toDouble(), maxRadius.toDouble(), mass)).toInt()
@@ -53,7 +55,7 @@ class Star(
             radius = round(linearInterpolation(maxMass, sunMass, maxRadius + 1.0, sunRadius.toDouble(), mass)).toInt()
         }
 
-//        starsChartData[radius - 1]++
+        starsChartData[radius - 1]++
 
     }
 
@@ -107,6 +109,8 @@ class Star(
 
             updateStarRadius()
             updateStarColor()
+
+//            starsChartData[star.radius - 1]--
 
         }
 

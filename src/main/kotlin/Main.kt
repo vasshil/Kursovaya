@@ -1,10 +1,7 @@
 import objects.Galaxy
-import objects.Star
 import objects.sun
-import view.GraphicsWindow
-import view.InfoWindow
-import java.util.*
-import kotlin.math.*
+import view.main.GalaxyWindow
+import view.info.InfoWindow
 
 
 val galaxy = Galaxy()
@@ -14,14 +11,16 @@ var starsCounter = numberOfStars
 
 var starsChartData = MutableList(starsColors.size) { 0 }
 
+lateinit var infoWindow: InfoWindow
+
 fun main() {
 
     galaxy.generateStars()
     println(starsChartData)
 
-    val window = GraphicsWindow()
+    val window = GalaxyWindow()
+    infoWindow = InfoWindow()
 
-    val infoWindow = InfoWindow()
     infoWindow.updateSelectedStar(sun)
 
 
@@ -33,9 +32,10 @@ fun main() {
 
         window.update()
 
+        infoWindow.updateSelectedStarView()
         infoWindow.updateSelectedStarInfoLabel()
         infoWindow.updateStarsInfoLabel()
-//        infoWindow.updateStarsInfoChart()
+        infoWindow.updateStarsInfoChart()
 
 
         Thread.sleep(sleepTime)

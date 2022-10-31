@@ -4,7 +4,7 @@ import kotlin.math.min
 
 
 // stars data
-var numberOfStars = 100// * 2000
+var numberOfStars = 1000// * 2000
 
 val dt = 1e4
 
@@ -16,7 +16,7 @@ val maxMass = 59740e20
 val sunMass = 2e30
 
 val minRadius = 1
-val maxRadius = 5
+val maxRadius = 8
 val sunRadius = 10
 
 
@@ -27,12 +27,12 @@ val starsColors = listOf(
     Color(0xD6F5FC),
     Color(0xB7EDFD),
     Color(0x55C1F4),
+    Color(0x07a0a6),
     Color(0x2164F5),
-    Color(0xF3AE3D),
-    Color(0xF08A34),
-    Color(0xEC602A),
-    Color(0xE33126),
-    Color(0xFDF47E)  // sun
+    Color(0x9004ba),
+    Color(0x046e02),
+    Color(0xafd106),
+    Color(0xfccf05)  // sun
 
 )
 
@@ -51,12 +51,12 @@ val systemRadius = 1e12 // km
 val kmInPx = systemRadius / (screenWidth / 2)
 val distanceBetweenAddingStars = 3 * kmInPx
 
-val sleepTime = 2L // millis
+val sleepTime = 0L // millis
 
 
 // Info Window
 
-val infoScreenWidth = 400
-val infoScreenHeight = 700
+val infoScreenWidth = 500
+val infoScreenHeight = 450
 val infoScreenPadding = 10
 

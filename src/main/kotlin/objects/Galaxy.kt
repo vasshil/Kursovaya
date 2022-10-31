@@ -1,6 +1,7 @@
 package objects
 
 import distanceBetweenAddingStars
+import infoWindow
 import kmInPx
 import maxMass
 import minMass
@@ -63,6 +64,10 @@ class Galaxy {
                                 if (stars[neighbourStar.i][neighbourStar.j].remove(neighbourStar)) {
                                     starsCounter--
                                     starsChartData[neighbourStar.radius - 1]--
+
+                                    if (infoWindow.selectedStar == neighbourStar) {
+                                        infoWindow.updateSelectedStar(star)
+                                    }
                                 }
 
 
@@ -108,6 +113,9 @@ class Galaxy {
                         starsCounter--
                         starsChartData[star.radius - 1]--
 
+                        if (infoWindow.selectedStar == star) {
+                            infoWindow.updateSelectedStar(sun)
+                        }
                         continue
                     }
 
@@ -168,7 +176,7 @@ class Galaxy {
 
             stars[i][j].add(
                 Star(
-                    "objects.Star-${n + 1}",
+                    "Star-${n + 1}",
                     x,
                     y,
                     getRandomMass(),
